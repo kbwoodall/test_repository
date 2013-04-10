@@ -1,0 +1,14 @@
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"  
+     android:id="@+id/rowTextView"   
+     android:layout_width="fill_parent"   
+     android:layout_height="wrap_content"  
+     android:layout_marginLeft="10dp"
+     android:fastScrollEnabled="true"
+     android:scrollbarAlwaysDrawVerticalTrack="true"
+     android:scrollbarFadeDuration="0"
+     android:fadeScrollbars="false"
+     android:scrollbarStyle="outsideInset"
+     android:padding="10dp"
+     android:textColor="#292929"
+     android:textSize="16sp" />
+ 
