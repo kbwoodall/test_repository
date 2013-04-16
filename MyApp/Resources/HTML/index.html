@@ -1,397 +1,145 @@
-<!-- This example is from the book _JavaScript: The Definitive Guide_.     -->
-<!-- Written by David Flanagan.  Copyright (c) 1996 O'Reilly & Associates. -->
-<!-- This example is provided WITHOUT WARRANTY either expressed or implied.-->
-<!-- You may study, use, modify, and distribute it for any purpose.        -->
-<HEAD>
-	<TITLE>2007 U.S. Federal Income Tax Estimator</TITLE>
-	<SCRIPT>
-		// These functions define the data structures we'll use to store
-		// tax bracket and tax schedule data for computing taxes.
-		function TaxBracket(cutoff, percentage, base) {
-			this.cutoff = cutoff;
-			// how much money to be in this bracket
-			this.percentage = percentage;
-			// what the tax is in this bracket
-			this.base = base;
-			// combined tax from all lower brackets
-		}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>Retrieving table data</title>
 
-		function TaxSchedule(b0, b1, b2, b3, b4) {// A tax schedule is just 5 brackets
-			this[0] = b0;
-			this[1] = b1;
-			this[2] = b2;
-			this[3] = b3;
-			this[4] = b4;
-		}
+		<script type="text/javascript">
+			var xmlhttp
+			function GetIds(Arg) {
 
-		// Taxes are computed using a tax schedule that depends on your filing status,
-		// so we create an array and store four different schedules in it.
-		var Schedules = new Object();
-		// create the array.
-
-		// Schedule X: Single
-		Schedules[0] = new TaxSchedule(new TaxBracket(263750, .396, 84020.5), new TaxBracket(121300, .36, 32738.5), new TaxBracket(58150, .31, 13162), new TaxBracket(24000, .28, 3600), new TaxBracket(0, .15, 0));
-
-		// Schedule Z: Head of Household
-		Schedules[1] = new TaxSchedule(new TaxBracket(263750, .396, 81554), new TaxBracket(134500, .36, 35024), new TaxBracket(83050, .31, 19074.5), new TaxBracket(32150, .28, 4822.5), new TaxBracket(0, .15, 0));
-
-		// Schedule Y1: Married,  Filing Jointly
-		Schedules[2] = new TaxSchedule(new TaxBracket(263750, .396, 79445), new TaxBracket(147700, .36, 37667), new TaxBracket(96900, .31, 21919), new TaxBracket(40100, .28, 6015), new TaxBracket(0, .15, 0));
-
-		// Schedule Y2: Married, Filing Separately
-		Schedules[3] = new TaxSchedule(new TaxBracket(131875, .396, 39722.5), new TaxBracket(73850, .36, 18833.5), new TaxBracket(48450, .31, 10959.5), new TaxBracket(20050, .28, 3007.5), new TaxBracket(0, .15, 0));
-
-		// The standard deduction allowed by tax law depends on filing status,
-		// so we've got to store this data in an array as well.
-		var StandardDeductions = new Object();
-		StandardDeductions[0] = 4000;
-		StandardDeductions[1] = 5900;
-		StandardDeductions[2] = 6700;
-		StandardDeductions[3] = 3350;
-
-		// This function computes the tax and updates all the elements in the form.
-		// It is triggered whenever anything changes, and makes sure that
-		// all elements of the form contains legal values and are consistent.
-
-		var xmlhttp
-
-		function SendData(Arg) {
-
-			alert("starting send in method SendData")
-
-			xmlhttp = null;
-
-			var Url = "XMLHttpRequest_responseXML.php"// THE SERVER SCRIPT TO HANDLE THE REQUEST
-
-			//var Url = "http://projects.reviewjournal.com/data/index8.php";
-
-			if (window.XMLHttpRequest) {
-
-				xmlhttp = new XMLHttpRequest() // For all modern browsers
-
-			} else if (window.ActiveXObject) {
-
-				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP") // For (older) IE
-
-			}
-
-			if (xmlhttp != null) {
-
-				xmlhttp.onreadystatechange = onStateChange;
-
-				Url = Url + "?Date=" + escape(Arg) + "&NoCache=" + new Date().getTime()
-				var Url = "http://projects.reviewjournal.com/data/index8.php";
-
-				alert(Url)
-
-				// "&NoCache"  => Append the timestamp to avoid cashing
-				// Also escape the input argument  (Arg) to properly url-encode the characters (to be sure)
-
-				xmlhttp.open("GET", Url, true);
-				//  (httpMethod,  URL,  asynchronous)
-
-				xmlhttp.overrideMimeType('application/json');
-				// xmlhttp.overrideMimeType('text/xml');
-
-				xmlhttp.send(null);
-
-				/*
-				 // How to send a POST request
-				 xmlhttp.open("POST", Url, true);                                                         //  (httpMethod,  URL,  asynchronous)
-
-				 xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
-				 xmlhttp.send( "Date=" + escape(Arg) );
-				 */
-
-			} else {
-
-				alert("The XMLHttpRequest not supported");
-
-			}
-
-		}
-
-		function onStateChange() {
-
-			if (xmlhttp.readyState == 4) {
-
-				alert("returning from http")// 4 => loaded complete
-
-				alert(xmlhttp.status)
-
-				if (xmlhttp.status == 200) {// HTTP status code  ( 200 => OK )
-
-					//alert(xmlhttp.responseJSON)
-					alert(xmlhttp.responseText)
-
-					//alert(getAllResponseHeaders())
-
-					if (xmlhttp.status != 404) {
-
-						alert("here");
-						
-						var jsonResponse = JSON.parse(xmlhttp.responseText);
-
-						//var local = new Function("return "+ xmlhttp.responseText)();
-						var str = JSON.stringify(jsonResponse.top);
-						var entry = jsonResponse.top;
-											
-						alert(str);
-						//alert(entry);
-											
-						var employees = [
-							{ "firstName":"John" , "lastName":"Doe" },
-							{ "firstName":"Anna" , "lastName":"Smith" },
-							{ "firstName":"Peter" , "lastName": "Jones" }
-						];					
-											
-						//alert(employees[0].lastName);	
-						
-						
-						alert(entry[0].id);					
-												
-						//var jText = JSON.parse(jsonReponse)		
-						//alert(str.id)		
-							
-						alert("final");	
-						for (var i in entry) {
-							alert(entry[i].id);
-							
-						}							
-						
-						//var contact = JSON.parse(jsontext);
-						//document.write(contact.surname + ", " + contact.firstname);
-												
-												
-						//alert("Code - Name\n" + local[0].id + ' - ' + local[0].name);
-					} else {
-						alert("Airport not found");
-					}
-
-					var xmlDoc = xmlhttp.responseXML// "xmlDoc" the returned xml object
-
-					// alert(typeof xmlhttp.responseXML)                                                               // Returns: object
-					// alert ("childNodes: "+xmlDoc.childNodes.length)                                             // Just for test
-
-					var DateNode = xmlDoc.getElementsByTagName('Date')[0].firstChild.nodeValue// The <Date> element's node value  (the sent date)
-
-					var Xml2String// Convert the xml to string just to display it
-
-					if (xmlDoc.xml) {
-						Xml2String = xmlDoc.xml // Converts the xml object to string  (  For IE)
-					} else {
-						Xml2String = new XMLSerializer().serializeToString(xmlDoc);
-						// Converts the xml object to string (For rest browsers, mozilla, etc)
-					}
-
-					var Message = "--------- RESPONSE HEADERS  (NOTE THE CONTENT-TYPE) --------\n\n"
-
-					Message += xmlhttp.getAllResponseHeaders()
-					Message += "\n\n----------------------------------- XML -----------------------------------\n\n"
-					Message += Xml2String
-					Message += "\n\n--------------------- DATE (PARSED FROM XML) ----------------------\n\n"
-					Message += DateNode
-
-					alert(Message)
-
-					// alert( Xml2String )
-
-					//alert (xmlhttp.responseText)
-
-					document.getElementById("CellData").value = Xml2String
-
+				xmlhttp = null;
+				var Url = "XMLHttpRequest_responseXML.php"
+				if (window.XMLHttpRequest) {
+					xmlhttp = new XMLHttpRequest()
+				} else if (window.ActiveXObject) {
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+				}
+				if (xmlhttp != null) {
+					xmlhttp.onreadystatechange = onStateChange;
+					Url = Url + "?Date=" + escape(Arg) + "&NoCache=" + new Date().getTime()
+					var Url = "http://projects.reviewjournal.com/data/index8.php";
+					xmlhttp.open("GET", Url, true);
+					xmlhttp.overrideMimeType('application/json');
+					xmlhttp.send(null);
 				} else {
-
-					alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status);
-
-				} // End of:   if (xmlhttp.status==200)
+					alert("The XMLHttpRequest not supported");
+				}
 
 			}
 
-		}
+			function onStateChange() {
+				if (xmlhttp.readyState == 4) {
+					if (xmlhttp.status == 200) {
 
-		function compute(f) {
-			var f = document.taxcalc;
-			// This is the form we'll we working with;
+						var body = document.getElementsByTagName("body")[0];
+						// creates a <table> element and a <tbody> element
+						var tbl = document.createElement("table");
+						var tblBody = document.createElement("tbody");
+						var jsonResponse = JSON.parse(xmlhttp.responseText);
+						var entry = jsonResponse.top;
+						// creating all cells
+						for (var j = 0; j < entry.length; j++) {
+							// creates a table row
+							var row = document.createElement("tr");
+							// Create a <td> element and a text node, make the text
+							// node the contents of the <td>, and put the <td> at
+							// the end of the table row
+							var cell = document.createElement("td");
+							//var cellText = document.createTextNode("cell is row " + j + ", column " + i);
+							var cellText = document.createTextNode("Order id:  " + entry[j].id);
 
-			//document.location.href = "servlets/com.myproj.myServlet?param1=123&param2=abc";
+							cell.appendChild(cellText);
+							row.appendChild(cell);
+							// add the row to the end of the table body
+							tblBody.appendChild(row);
+						}
+						// put the <tbody> in the <table>
+						tbl.appendChild(tblBody);
+						// appends <table> into <body>
+						body.appendChild(tbl);
+						// sets the border attribute of tbl to 2;
+						tbl.setAttribute("border", "2");
 
-			//var u = "http://projects.reviewjournal.com/data/index8.php";
+					} else {
+						alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status);
+					}
 
-			//alert("starting send")
-
-			SendData(null);
-
-			//$.getJSON( u, [], [callback] )
-
-			/*
-			$(document).ready(function() {
-			$("#driver").click(function(event){
-			$.getJSON('/jquery/result.json', function(jd) {
-			$('#stage').html('<p> Name: ' + jd.name + '</p>');
-			$('#stage').append('<p>Age : ' + jd.age+ '</p>');
-			$('#stage').append('<p> Sex: ' + jd.sex+ '</p>');
-			});
-			});
-			});
-			*/
-			//document.location.href = u;
-
-			//xmlhttp.open("GET",u,true);
-			//xmlhttp.send();
-			//document.getElementById("top").innerHTML=xmlhttp.responseText;
-
-			//document.location.href = "http://projects.reviewjournal.com/data/index7.php?name=5";
-
-			//<?php
-			//	echo "<h1>Screen Resolution:</h1>";
-			//	echo "Width  : ".$_GET['width']."<br>";
-			//	echo "Height : ".$_GET['height']."<br>";
-			//?>
-
-			// get the filing status
-			var status = f.status.selectedIndex;
-
-			// line 1, adjusted gross income
-			var income = parseFloat(f.income.value);
-			if (isNaN(income)) {
-				income = 0;
-				f.income.value = "0";
-			}
-			f.income.value = Math.round(income);
-
-			// line 2, the standard or itemized deduction
-			var deduction;
-			if (f.standard.checked)
-				deduction = StandardDeductions[status];
-			else {
-				deduction = parseFloat(f.deduction.value);
-				if (isNaN(deduction))
-					deduction = 0;
-				if (deduction < StandardDeductions[status]) {
-					deduction = StandardDeductions[status];
-					f.standard.checked = true;
 				}
 			}
-			f.deduction.value = Math.round(deduction);
 
-			// Line 3: Subtract line 2 from line 1
-			var line3 = income - deduction;
-			if (line3 < 0)
-				line3 = 0;
-			f.line3.value = line3;
+			function GetAddresses(Arg) {
 
-			// Line 4: exemptions
-			var num_exemptions = parseInt(f.num_exemptions.value);
-			if (isNaN(num_exemptions))
-				num_exemptions = 1;
-			f.num_exemptions.value = num_exemptions;
-			var exemption = num_exemptions * 2550;
-			f.exemption.value = exemption;
+				xmlhttp = null;
+				var Url = "XMLHttpRequest_responseXML.php"
+				if (window.XMLHttpRequest) {
+					xmlhttp = new XMLHttpRequest()
+				} else if (window.ActiveXObject) {
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+				}
+				if (xmlhttp != null) {
+					xmlhttp.onreadystatechange = onStateChange;
+					Url = Url + "?Date=" + escape(Arg) + "&NoCache=" + new Date().getTime()
+					var Url = "http://projects.reviewjournal.com/data/index7.php?name=5";
+					xmlhttp.open("GET", Url, true);
+					xmlhttp.overrideMimeType('application/json');
+					xmlhttp.send(null);
+				} else {
+					alert("The XMLHttpRequest not supported");
+				}
 
-			// Line 5: subtract Line 4 from Line 3.
-			var line5 = line3 - exemption;
-			if (line5 < 0)
-				line5 = 0;
-			f.line5.value = line5;
+			}
 
-			// Line 6: tax from schedules.
-			// determine which tax schedule to use, based on filing status
-			var schedule = Schedules[status];
-			// determine which tax bracket to use within that schedule
-			for (var i = 0; i < 5; i++)
-				if (line5 >= schedule[i].cutoff)
-					break;
-			var bracket = schedule[i];
-			// then compute the tax based on that bracket
-			var tax = (line5 - bracket.cutoff) * bracket.percentage + bracket.base;
-			f.tax.value = Math.round(tax);
-		}
-	</SCRIPT>
-</HEAD>
-<BODY>
-	<H1>1996 U.S. Federal Income Tax Estimator</H1>
-	To compute your 1996 U.S. Federal Income Tax, follow the steps in the
-	table below.  You only need to enter the data in the boldface fields.
-	JavaScript will perform all the necessary computations for you.
-	<P>
-		<I>This program is an example only.  Computing your actual income tax is
-		almost always more complicated than this!</I>
+			function onStateChange() {
+				if (xmlhttp.readyState == 4) {
+					if (xmlhttp.status == 200) {
+						var body = document.getElementsByTagName("body")[0];
+						// creates a <table> element and a <tbody> element
+						var tbl = document.createElement("table");
+						var tblBody = document.createElement("tbody");
+						var jsonResponse = JSON.parse(xmlhttp.responseText);
+						var entry = jsonResponse.top;
+						// creating all cells
+						for (var j = 0; j < entry.length; j++) {
+							// creates a table row
+							var row = document.createElement("tr");
+							// Create a <td> element and a text node, make the text
+							// node the contents of the <td>, and put the <td> at
+							// the end of the table row
+							var cell = document.createElement("td");
+							//var cellText = document.createTextNode("cell is row " + j + ", column " + i);
+							var cellText = document.createTextNode(entry[j].street);
 
-		<!--
-		-- The stuff below is an HTML table inside of an HTML form.  It gets tricky!
-		-- Notice the event handlers on all the form input elements.
-		-->
-		<FORM NAME="taxcalc">
-			<TABLE BORDER CELLPADDING=3>
-				<TR>
-					<!-- Filing status -->
-					<TD>&nbsp;</TD>
-					<TD COLSPAN=3 BGCOLOR="d0d0d0"><B>Select your filing status:</B>
-					<SELECT NAME="status" onChange="compute()">
-						<OPTION VALUE=0 SELECTED>Single <OPTION VALUE=1>Head of Household <OPTION VALUE=2>Married, Filing Jointly <OPTION VALUE=3>Married, Filing Separately
-					</SELECT><TD>
-				</TR>
-				<TR>
-					<!-- Line 1: Income -->
-					<TD>1.</TD>
-					<TD BGCOLOR="d0d0d0"><B>Enter your Adjusted Gross Income</B></TD>
-					<TD BGCOLOR="d0d0d0">
-					<INPUT TYPE=text NAME="income" SIZE=12 onChange="compute()">
-					</TD>
-				</TR>
-				<TR>
-					<!-- Line 2: Deduction -->
-					<TD>2.</TD>
-					<TD BGCOLOR="d0d0d0"><B>Check here
-					<INPUT TYPE=checkbox NAME="standard" CHECKED onClick="compute()">
-					for the standard deduction,
-					<BR>
-					or enter your Itemized Deduction</B></TD>
-					<TD BGCOLOR="d0d0d0">
-					<INPUT TYPE=text NAME="deduction" SIZE=12
-					onChange="this.form.standard.checked = false; compute()">
-					</TD>
-				</TR>
-				<TR>
-					<!-- Line 3: subtraction -->
-					<TD>3.</TD>
-					<TD>Subtract Line 2 from Line 1:</TD>
-					<TD>
-					<INPUT TYPE=text NAME="line3" SIZE=12 onChange="compute()">
-					</TD>
-				</TR>
-				<TR>
-					<!-- Line 4: Exemption -->
-					<TD ROWSPAN=2>4.</TD>
-					<TD BGCOLOR="d0d0d0"><B>Enter your number of exemptions: </B>
-					<INPUT TYPE=text NAME="num_exemptions" SIZE=2 onChange="compute()">
-					</TD><TD></TD>
-				</TR>
-				<TR>
-					<!-- Line 4, continued -->
-					<TD>Multiply number of exemptions by $2,550.</TD>
-					<TD>
-					<INPUT TYPE=text NAME="exemption" SIZE=12 onChange="compute()">
-					</TD>
-				</TR>
-				<TR>
-					<!-- Line 5: subtraction -->
-					<TD>5.</TD>
-					<TD>Subtract Line 4 from Line 3.</TD>
-					<TD>
-					<INPUT TYPE=text NAME="line5" SIZE=12 onChange="compute()">
-					</TD>
-				</TR>
-				<TR>
-					<!-- Line 6: Tax -->
-					<TD>6.</TD>
-					<TD>This is your tax, from 1996 tax rate schedules</TD>
-					<TD>
-					<INPUT TYPE=text NAME="tax" SIZE=12 onChange="compute()">
-					</TD>
-				</TR>
-			</TABLE>
-			<FORM>
-</BODY>
+							cell.appendChild(cellText);
+							row.appendChild(cell);
+							// add the row to the end of the table body
+							tblBody.appendChild(row);
+						}
+						// put the <tbody> in the <table>
+						tbl.appendChild(tblBody);
+						// appends <table> into <body>
+						body.appendChild(tbl);
+						// sets the border attribute of tbl to 2;
+						tbl.setAttribute("border", "2");
+
+					} else {
+						alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status);
+					}
+				}
+			}
+
+		</script>
+
+	</head>
+	<body>
+		<p>
+			To re-generate, click Reload (or Refresh).
+		</p>
+
+		<p>
+			<input type="button" value="Retrieve Addresses" onclick="GetAddresses()">
+		</p>
+
+	</body>
+</html>
+
+			
