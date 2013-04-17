@@ -1,0 +1,26 @@
+body {
+	background-color: #ffffff;
+}
+th {
+	text-align: center;
+	font-weight: bold;
+	vertical-align: baseline
+}
+
+td {
+	vertical-align: middle
+}
+
+table {
+	border-collapse: collapse;
+	background-color: #CCFFCC
+}
+tr#row1 {
+	border-top: 3px solid blue
+}
+tr#row2 {
+	border-top: 1px solid black
+}
+tr#row3 {
+	border-top: 1px solid black
+}

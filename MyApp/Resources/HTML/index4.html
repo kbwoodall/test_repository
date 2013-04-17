@@ -129,12 +129,42 @@
 
 					if (xmlhttp.status != 404) {
 
-						alert("here")
+						alert("here");
+						
+						var jsonResponse = JSON.parse(xmlhttp.responseText);
 
-						var local = new Function("return "+ xmlhttp.responseText)();
-
-						alert("here2")
-						alert("Code - Name\n" + local[0].id + ' - ' + local[0].name);
+						//var local = new Function("return "+ xmlhttp.responseText)();
+						var str = JSON.stringify(jsonResponse.top);
+						var entry = jsonResponse.top;
+											
+						alert(str);
+						//alert(entry);
+											
+						var employees = [
+							{ "firstName":"John" , "lastName":"Doe" },
+							{ "firstName":"Anna" , "lastName":"Smith" },
+							{ "firstName":"Peter" , "lastName": "Jones" }
+						];					
+											
+						//alert(employees[0].lastName);	
+						
+						
+						alert(entry[0].id);					
+												
+						//var jText = JSON.parse(jsonReponse)		
+						//alert(str.id)		
+							
+						alert("final");	
+						for (var i in entry) {
+							alert(entry[i].id);
+							
+						}							
+						
+						//var contact = JSON.parse(jsontext);
+						//document.write(contact.surname + ", " + contact.firstname);
+												
+												
+						//alert("Code - Name\n" + local[0].id + ' - ' + local[0].name);
 					} else {
 						alert("Airport not found");
 					}

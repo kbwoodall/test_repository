@@ -17,7 +17,7 @@
 					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
 				}
 				if (xmlhttp != null) {
-					xmlhttp.onreadystatechange = onStateChangeIds;
+					xmlhttp.onreadystatechange = onStateChange;
 					Url = Url + "?Date=" + escape(Arg) + "&NoCache=" + new Date().getTime()
 					var Url = "http://projects.reviewjournal.com/data/index8.php";
 					xmlhttp.open("GET", Url, true);
@@ -29,13 +29,13 @@
 
 			}
 
-			function onStateChangeIds() {
-				if (xmlhttp.readyState == 4 && xmlhttp.status==200) {	
+			function onStateChange() {
+				if (xmlhttp2.readyState == 4 && xmlhttp2.status==200) {	
 						var body = document.getElementsByTagName("body")[0];
 						// creates a <table> element and a <tbody> element
 						var tbl = document.createElement("table");
 						var tblBody = document.createElement("tbody");
-						var jsonResponse = JSON.parse(xmlhttp.responseText);
+						var jsonResponse = JSON.parse(xmlhttp2.responseText);
 						var entry = jsonResponse.top;
 						// creating all cells
 						for (var j = 0; j < entry.length; j++) {
@@ -59,14 +59,9 @@
 						body.appendChild(tbl);
 						// sets the border attribute of tbl to 2;
 						tbl.setAttribute("border", "2");
-						
-						//var s = '<li>text</li>';
-						//var el = document.createElement(s);	
-						sometext = document.createTextNode("\x00");											
-						body.appendChild(sometext);
 
 					} else {
-						//alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status);
+						alert("statusText: " + xmlhttp2.statusText + "\nHTTP status code: " + xmlhttp2.status);
 					}
 			}
 
@@ -80,9 +75,9 @@
 					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
 				}
 				if (xmlhttp != null) {
-					xmlhttp.onreadystatechange = onStateChangeAddrs;
+					xmlhttp.onreadystatechange = onStateChange;
 					Url = Url + "?Date=" + escape(Arg) + "&NoCache=" + new Date().getTime()
-					var Url = "http://projects.reviewjournal.com/data/index7.php?name=13";
+					var Url = "http://projects.reviewjournal.com/data/index7.php?name=5";
 					xmlhttp.open("GET", Url, true);
 					xmlhttp.overrideMimeType('application/json');
 					xmlhttp.send(null);
@@ -92,7 +87,7 @@
 
 			}
 
-			function onStateChangeAddrs() {
+			function onStateChange() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status==200) {					
 						var body = document.getElementsByTagName("body")[0];
 						// creates a <table> element and a <tbody> element
@@ -122,13 +117,9 @@
 						body.appendChild(tbl);
 						// sets the border attribute of tbl to 2;
 						tbl.setAttribute("border", "2");
-						
-						//var s = '<li>text</li>';
-						//var el = document.createElement(s);		
-						sometext = document.createTextNode("\x00");				
-						body.appendChild(sometext);						
+
 					} else {
-						//alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status  + "\nHTTP ready state: " + xmlhttp.readyState);
+						alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status  + "\nHTTP ready state: " + xmlhttp.readyState);
 					}
 			}
 
@@ -141,16 +132,9 @@
 			To re-generate, click Reload (or Refresh).
 		</p>	
         
-        <p>
-			<input type="button" value="Retrieve Order Ids" onclick="GetIds()">
-		</p>
-
-        
 		<p>
 			<input type="button" value="Retrieve Addresses" onclick="GetAddresses()">
 		</p>
 
 	</body>
 </html>
-
-			

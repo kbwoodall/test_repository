@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//w3c//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>JavaScript Example 14</title>
+
+<script type="text/javascript">
+   function avgeScores (scores)
+   {
+      var size = scores.length;
+      var sum = 0;
+
+      for (var i = 0; i < size; i++)
+          sum += scores[i];
+
+      return sum / size;
+   }
+
+</script>
+</head>
+
+<body>
+<script type="text/javascript">
+
+   var num = 0, i = 0;
+   var scores = new Array();
+
+   document.writeln("<h1 style=\"text-align: center\">Welcome" +
+                    " to the Average Center</h1>");
+
+   while (num != -1) {
+      num = parseInt(prompt("Enter the score, -1 to stop: ", "0"));
+      if (num != -1) {
+         scores[i] = num;
+         i++;
+      }
+   }
+
+   if (i > 0) 
+      document.writeln("<p>The average is " + avgeScores(scores) + "</p>")
+   else
+      document.writeln("<h1>You didn't enter any scores!</h1>");
+</script>
+
+<p>To find another average, click Reload (or Refresh).</p>
+
+</body>
+</html>
