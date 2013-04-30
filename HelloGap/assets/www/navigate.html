@@ -92,11 +92,11 @@
 
 						//var cell = document.createElement("td");
 						var latitude = entry[j].latitude;
-						//alert("lat " + latitude);
-						
+						//alert("lat " + latitude);						
 						
 						var ref = 'map.html' + '?lon=' + latitude + "&lat=" + longitude;
-					   //alert(ref);
+						//note: database may have coordinates reversed
+					    //alert(ref);
 				      	window.location.href = ref;
 						
 						//cell.appendChild(lat);
@@ -133,9 +133,7 @@
 					//alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status  + "\nHTTP ready state: " + xmlhttp.readyState);
 				}
 			}
-			//-------------------------------------------------------------------------------------------
-			
-			
+			//-------------------------------------------------------------------------------------------		
 
 		</script>
 	</head>
