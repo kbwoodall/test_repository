@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<script src="http://www.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=Fmjtd%7Cluub2q0bnl%2Cr2%3Do5-9u7x5r"></script>
+
+		<script type="text/javascript">
+			params = {};
+
+			function updateHrefs() {
+				if (location.search) {
+					var parts = location.search.substring(1).split('&');
+
+					for (var i = 0; i < parts.length; i++) {
+						var nv = parts[i].split('=');
+						if (!nv[0])
+							continue;
+						params[nv[0]] = nv[1] || true;
+					}
+				}
+				//longitude = -114.986544;
+				//latitude = 35.992394;
+				//alert('entering navigate ' + params.id);
+				var address = params.id;
+				//alert('entering navigate ' + address);
+				GetGps(address);				
+
+				//var str = "coordinates";
+				
+				//if (window.confirm('Display map for ' + str)) {
+					//var ref = 'map.html' + '?id=' + this.cells[1].innerHTML;
+				//	var ref = 'map.html' + '?lon=' + longitude + "&lat=" + latitude;
+					//alert(ref);
+				//	window.location.href = ref;
+				//}
+				
+			}
+		
+			//Call the code on page load
+			if (window.addEventListener) {
+				window.addEventListener('load', updateHrefs, false);
+				//W3C
+			} else if (window.attachEvent) {
+				window.attachEvent('onload', updateHrefs);
+				//OLDER MSIE
+			}
+			
+			//---------------------------------------------------------------------------------------------------------
+			function GetGps(Arg) {
+				//alert('in getgps');
+				
+				xmlhttp = null;
+				if (window.XMLHttpRequest) {
+					xmlhttp = new XMLHttpRequest()
+				} else if (window.ActiveXObject) {
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+				}
+				if (xmlhttp != null) {
+					xmlhttp.onreadystatechange = onStateChangeGps;
+					var Url = "http://projects.reviewjournal.com/data/index9.php?name=" + Arg;
+					xmlhttp.open("GET", Url, true);
+					xmlhttp.overrideMimeType('application/json');
+					xmlhttp.send(null);
+				} else {
+					alert("The XMLHttpRequest not supported");
+				}
+			}
+
+			function onStateChangeGps() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					//alert('getting sql');
+
+					//var body = document.getElementsByTagName("body")[0];
+					// creates a <table> element and a <tbody> element
+					//var tbl = document.createElement("table");
+					//var tblBody = document.createElement("tbody");
+					var jsonResponse = JSON.parse(xmlhttp.responseText);
+					var entry = jsonResponse.top;
+					// creating all cells
+					for (var j = 0; j < entry.length; j++) {
+						// creates a table row
+						//var row = document.createElement("tr");
+						// Create a <td> element and a text node, make the text
+						// node the contents of the <td>, and put the <td> at
+						// the end of the table row
+						//var cell = document.createElement("td");
+						var longitude = entry[j].longitude;
+						//alert("lon " + longitude);
+						//cell.appendChild(lon.value);
+						//cell.height = '50px';
+						//cell.width = '300x';
+						//row.appendChild(cell);
+
+						//var cell = document.createElement("td");
+						var latitude = entry[j].latitude;
+						//alert("lat " + latitude);						
+						
+						var ref = 'map.html' + '?lon=' + latitude + "&lat=" + longitude;
+						//note: database may have coordinates reversed
+					    //alert(ref);
+				      	window.location.href = ref;
+						
+						//cell.appendChild(lat);
+						//cell.height = '50px';
+						//cell.width = '300x';
+						//row.appendChild(cell);
+						//tblBody.appendChild(row);
+					}
+					/*
+					var nodeList = tblBody.childNodes;
+					//alert("nbr of addresses " + nodeList.length);
+
+					for (var i = 0; i < nodeList.length; i++) {
+					nodeList[i].onclick = (function() {// closure
+					var cnt = i;
+					// save the counter to use in the function
+					return function() {
+					if (window.confirm('Display map for ' + this.cells[0].innerHTML)) {
+					window.location.href='map.html';
+					}
+					}
+					})(i);
+					}
+					*/
+					// put the <tbody> in the <table>
+					//tbl.appendChild(tblBody);
+					// appends <table> into <body>
+					//body.appendChild(tbl);
+					// sets the border attribute of tbl to 2;
+					//tbl.setAttribute("border", "2");
+					//var nodeList = tblBody.childNodes;
+					//var str = "";
+				} else {
+					//alert("statusText: " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status  + "\nHTTP ready state: " + xmlhttp.readyState);
+				}
+			}
+			//-------------------------------------------------------------------------------------------		
+
+		</script>
+	</head>
+</html>
+
+
+				
